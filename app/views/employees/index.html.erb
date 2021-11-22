@@ -1,0 +1,28 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Employee</h1>
+
+<%= form_with url: "", method: :get, data: { turbo_frame: "employees", turbo_action: "advance" } do | form | %>
+  Show <%= form.select :count, options_for_select([10, 25, 50, 100], selected: params[:count] ), {}, { onchange: "this.form.requestSubmit()" } %>
+  Search <%= form.search_field :query, value: params[:query], oninput: "this.form.requestSubmit()" %>
+<% end %>
+
+<%= turbo_frame_tag "employees" do %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th class="px-4 py-2"><%= sort_link_to "Name", :name, data: { turbo_action: "advance" } %></th>
+        <th class="px-4 py-2"><%= sort_link_to "Position", :position, data: { turbo_action: "advance" } %></th>
+        <th class="px-4 py-2"><%= sort_link_to "Office", :office, data: { turbo_action: "advance" } %></th>
+        <th class="px-4 py-2"><%= sort_link_to "Age", :age, data: { turbo_action: "advance" } %></th>
+        <th class="px-4 py-2"><%= sort_link_to "Start date", :start_date, data: { turbo_action: "advance" } %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render @employees %>
+    </tbody>
+  </table>
+  <%== pagy_nav @pagy %>
+<% end %>
+
+<%= link_to "New employee", new_employee_path %>
